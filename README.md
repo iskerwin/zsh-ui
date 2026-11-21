@@ -60,13 +60,14 @@ Fragments that go into a line are returned in `$REPLY`, not printed: `$(...)` wo
 | Name | Use |
 |---|---|
 | `_ui_fzf_opts` | `fzf "${_ui_fzf_opts[@]}" <your options>` for a picker |
+| `_ui_fzf_since <x.y[.z]>` | True when the installed fzf is at least that version: add options newer than your minimum only then, e.g. `_ui_fzf_since 0.61 && args+=( --ghost=... )`. `_ui_fzf_ver` puts the version number in `$REPLY` (0.66.1 → 66001, 0 without fzf) |
 | `_ui_fzf_look` | The look alone, e.g. to build `FZF_DEFAULT_OPTS` |
 | `_ui_fzf_inline` | Pointer and colors without boxes, for menus at the cursor (fzf-tab) |
 | `_ui_fzf_label <color> <title>` | Border title → `$REPLY`; colors: `grn` input, `blu` list, `cyn` preview |
 | `_ui_fzf_tabs <color> <title> <current> <views...>` | Title with view tabs → `$REPLY` |
 | `_ui_fzf_keys <color> <key> <label> [...]` | Key hints → `$REPLY` |
 
-Put the title on the input box (`--input-label`), key hints on the list (`--list-label`) and preview keys on the preview (`--preview-label`). The pickers need fzf 0.61 or newer.
+Put the title on the input box (`--input-label`), key hints on the list (`--list-label`) and preview keys on the preview (`--preview-label`). The look needs fzf 0.58 or newer; the blank gutter appears from fzf 0.66.
 
 ## Using it in a tool
 

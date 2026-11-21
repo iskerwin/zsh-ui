@@ -110,6 +110,23 @@ _ui_size() {
     fi
 }
 
+# _ui_fzf_since <x.y[.z]>: the installed fzf is at least that version (false without fzf).
+# For options newer than a tool's minimum fzf: _ui_fzf_since 0.61 && args+=( --ghost=... )
+# The version is read once per shell and kept in _ui_fzf_v (0.66.1 -> 66001); _ui_fzf_ver puts it in $REPLY.
+_ui_fzf_ver() {
+    if [[ -z ${_ui_fzf_v-} ]]; then
+        local v=$(FZF_DEFAULT_OPTS= FZF_DEFAULT_OPTS_FILE= command fzf --version 2>/dev/null)
+        local -a p=( ${(s:.:)${v%% *}} )
+        typeset -gi _ui_fzf_v=$(( ${p[1]%%[^0-9]*}0 / 10 * 1000000 + ${p[2]%%[^0-9]*}0 / 10 * 1000 + ${p[3]%%[^0-9]*}0 / 10 ))
+    fi
+    REPLY=$_ui_fzf_v
+}
+_ui_fzf_since() {
+    local -a p=( ${(s:.:)1} )
+    _ui_fzf_ver
+    (( REPLY && REPLY >= ${p[1]:-0} * 1000000 + ${p[2]:-0} * 1000 + ${p[3]:-0} ))
+}
+
 # fzf look (btop style): input, list and preview each get a rounded box, bordered green, blue and cyan.
 # The title goes on the input box's top border (--input-label, _ui_fzf_label / _ui_fzf_tabs), key hints
 # on the list's bottom border (--list-label, _ui_fzf_keys) and the preview's keys on the right of its bottom
@@ -120,7 +137,7 @@ typeset -ga _ui_fzf_look=(
     --border=none --margin=0 --padding=0 --no-separator
     --input-border=rounded --list-border=rounded --preview-border=rounded
     --input-label-pos=3 --list-label-pos=3:bottom --preview-label-pos=-3:bottom
-    --highlight-line --gutter=' ' --pointer='▌' --marker='✓' --prompt='❯ ' --info=inline-right
+    --highlight-line --pointer='▌' --marker='✓' --prompt='❯ ' --info=inline-right
     --color='input-border:green,list-border:blue,preview-border:cyan,label:-1,info:bright-black'
     --color='hl:blue,hl+:blue,prompt:green,pointer:magenta,marker:magenta,spinner:yellow,header:bright-black'
     --color='bg+:#44475a,gutter:-1'
@@ -128,10 +145,12 @@ typeset -ga _ui_fzf_look=(
 )
 # The same pointer and colors without boxes, for menus that pop up at the cursor (e.g. fzf-tab)
 typeset -ga _ui_fzf_inline=(
-    --highlight-line --gutter=' ' --pointer='▌' --marker='✓' --prompt='❯ ' --info=inline-right --no-separator
+    --highlight-line --pointer='▌' --marker='✓' --prompt='❯ ' --info=inline-right --no-separator
     --color='hl:blue,hl+:blue,prompt:green,info:bright-black,pointer:magenta,marker:magenta,spinner:yellow,header:bright-black'
     --color='bg+:#44475a,gutter:-1'
 )
+# A blank gutter (no ▌ column on the left) needs fzf 0.66
+_ui_fzf_since 0.66 && _ui_fzf_look+=( --gutter=' ' ) _ui_fzf_inline+=( --gutter=' ' )
 # For pickers: fzf "${_ui_fzf_opts[@]}" <the picker's own options>; later options override these.
 # Clears the file preview and labels from FZF_DEFAULT_OPTS. --preview-window merges with earlier values,
 # so `default` first drops their wrap and alternative layouts; pickers that wrap say so in their own --preview-window.
