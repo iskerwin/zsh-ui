@@ -35,7 +35,18 @@ git clone https://github.com/iskerwin/zsh-ui ~/.local/share/zsh-ui
 echo 'source ~/.local/share/zsh-ui/zsh-ui.plugin.zsh' >> ~/.zshrc
 ```
 
-Load it before tools that build options at load time, such as an `FZF_DEFAULT_OPTS` made from `_ui_fzf_look`.
+### Load order
+
+Anywhere works: tools pick zsh-ui up whether it loads before or after them. Load it before your own config that builds options at load time, such as an `FZF_DEFAULT_OPTS` made from `_ui_fzf_look`. With the other tools:
+
+```zsh
+plug "iskerwin/zsh-ui"                      # 1. anywhere; first is simplest
+plug "zap-zsh/supercharge"                  # 2. compinit (or your own compinit call)
+plug "iskerwin/zsh-remote"                  # 3. after compinit
+CF_PATHS=( ~/.zshrc ~/.config/zsh ${ZSH_REMOTE_DIR-} )
+plug "iskerwin/command-finder"              # 4. after zsh-remote, so CF_PATHS can list its commands
+plug "zsh-users/zsh-syntax-highlighting"    # 5. widget-wrapping plugins last
+```
 
 ## Contract
 
