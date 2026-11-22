@@ -1,5 +1,7 @@
 # zsh-ui
 
+English | [简体中文](README.zh-CN.md)
+
 One look for all your zsh tools. zsh-ui defines the output helpers (`_ui_*`) and the fzf look (`_ui_fzf_*`) that tools such as [command-finder](https://github.com/iskerwin/command-finder) and [zsh-remote](https://github.com/iskerwin/zsh-remote) use.
 
 ![A picker built with zsh-ui](img/picker.png)
