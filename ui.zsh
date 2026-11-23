@@ -127,7 +127,7 @@ _ui_fzf_since() {
     (( REPLY && REPLY >= ${p[1]:-0} * 1000000 + ${p[2]:-0} * 1000 + ${p[3]:-0} ))
 }
 
-# fzf look (btop style): input, list and preview each get a rounded box, bordered green, blue and cyan.
+# fzf look (TUI style): input, list and preview each get a rounded box, bordered green, blue and cyan.
 # The title goes on the input box's top border (--input-label, _ui_fzf_label / _ui_fzf_tabs), key hints
 # on the list's bottom border (--list-label, _ui_fzf_keys) and the preview's keys on the right of its bottom
 # border (--preview-label); the match count sits at the right of the input line. --header is for column titles.

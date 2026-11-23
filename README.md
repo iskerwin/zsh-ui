@@ -7,7 +7,7 @@ One look for all your zsh tools. zsh-ui defines the output helpers (`_ui_*`) and
 ![A picker built with zsh-ui](img/picker.png)
 
 - **Tools work without it.** Each tool ships `ui-fallback.zsh`, a plain version of the same functions.
-- **Install it and every tool switches to the same look**: colored status lines, help tables, and btop-style fzf pickers with rounded boxes, border titles and key hints.
+- **Install it and every tool switches to the same look**: colored status lines, help tables, and TUI-style fzf pickers with rounded boxes, border titles and key hints.
 - **Load order does not matter.** The fallback only defines what is still missing, so zsh-ui wins whether it loads before or after a tool.
 - Colors are the 16 ANSI colors, so your terminal theme decides the palette.
 
